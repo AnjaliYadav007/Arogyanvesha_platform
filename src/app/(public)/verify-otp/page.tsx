@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { pageEnter } from "@/lib/animations";
@@ -10,7 +11,7 @@ import { OTPInput } from "@/components/ui/OTPInput";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/api";
 
-export default function VerifyOTPPage() {
+function VerifyOTPForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -138,5 +139,17 @@ export default function VerifyOTPPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function VerifyOTPPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-bg-base flex items-center justify-center p-6">
+        <p className="text-text-muted">Loading verification...</p>
+      </div>
+    }>
+      <VerifyOTPForm />
+    </Suspense>
   );
 }

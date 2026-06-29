@@ -1,0 +1,44 @@
+[
+  {
+    "id": "local-user-w5rzt4nw9",
+    "name": "Test user 2 ",
+    "email": "testuser@gmail.com",
+    "passwordHash": "bdfffd85139b6091448cc20cc7a888f1:17569833e530547ae95558abbb470b4142ee73c9a590d04f5026f825c393141ba2ef0130462f3bbad7b0d802bcf632d8a35286c8e959692a4e6d139a87a5c1eb",
+    "plan": "free",
+    "prakritiCompleted": false,
+    "currentStreak": 0,
+    "createdAt": "2026-06-29T15:12:36.272Z",
+    "isVerified": false,
+    "otpCode": "541212",
+    "otpExpiresAt": "2026-06-29T15:22:43.236Z",
+    "avatarUrl": null
+  },
+  {
+    "id": "local-user-cdesaznen",
+    "name": "Harsh Vardhan Singh",
+    "email": "theobserverharshit@gmail.com",
+    "passwordHash": "4270e4da8c2a94895b635c70c93c7a59:d7a13a9ef82758ea38fc29b5a3bf507e0c93837d6d882d49e037c34f0f292903f23c5660043ffbe87d1010dc9d9f7744a16507dcc7d04b127255ffe99ec3e3ad",
+    "plan": "free",
+    "prakritiCompleted": false,
+    "currentStreak": 0,
+    "createdAt": "2026-06-29T15:13:25.513Z",
+    "isVerified": false,
+    "otpCode": "127048",
+    "otpExpiresAt": "2026-06-29T15:23:25.452Z",
+    "avatarUrl": null
+  },
+  {
+    "id": "local-user-hnio6dq55",
+    "name": "Harsh Vardhan Singh",
+    "email": "harshvardhansingh8932@gmail.com",
+    "passwordHash": "01dfda6a8d625d6b645cf71e6117e84a:68ce04267b854ae50d42b879fba8660d87db55e7bbc057d63891996c19b13d69dc045a2c6ea3d82a855995f5807c75e2f1b67e3eb167c90aefdba19598cd836f",
+    "plan": "free",
+    "prakritiCompleted": false,
+    "currentStreak": 0,
+    "createdAt": "2026-06-29T15:26:58.285Z",
+    "isVerified": true,
+    "otpCode": null,
+    "otpExpiresAt": null,
+    "avatarUrl": null
+  }
+]
