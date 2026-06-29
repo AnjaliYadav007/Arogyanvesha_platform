@@ -76,6 +76,24 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
+        if (result.error.includes("PLEASE_LOGIN_WITH_GOOGLE")) {
+          toast({
+            type: "error",
+            title: "Google Login Required",
+            description: "This email is registered via Google. Please click 'Continue with Google'.",
+          });
+          return;
+        }
+
+        if (result.error.includes("FIREBASE_NOT_CONFIGURED")) {
+          toast({
+            type: "warning",
+            title: "Firebase Not Configured",
+            description: "Firebase is not configured in .env.local. Registering/logging in with Firebase is unavailable.",
+          });
+          return;
+        }
+
         toast({
           type: "error",
           title: "Login failed",

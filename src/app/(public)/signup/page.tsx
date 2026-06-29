@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -92,7 +91,6 @@ function GoogleIcon() {
 ───────────────────────────────────────────────────────── */
 
 export default function SignupPage() {
-  const router = useRouter();
   const { toast } = useToast();
   const shouldReduce = useReducedMotion();
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
@@ -127,10 +125,15 @@ export default function SignupPage() {
       toast({
         type: "success",
         title: "Account created!",
-        description: "Please verify your email to continue.",
+        description: "Welcome to Arogyanvesha! Logging you in...",
       });
 
-      router.push(`/verify-otp?email=${encodeURIComponent(data.email)}`);
+      // Automatically sign in the user
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        callbackUrl: "/dashboard",
+      });
     } catch {
       toast({
         type: "error",
