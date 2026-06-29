@@ -7,70 +7,151 @@ import { cn } from "@/lib/utils";
 
 /* ─────────────────────────────────────────────────────────
    CVA VARIANTS
-   Blueprint §7.1 Button spec — all variants and sizes defined here.
+   Premium healthcare design system — all variants and sizes.
+
+   Design tokens referenced (must exist in tailwind.config):
+     bg-brand-burgundy        → #7A1F3D
+     bg-brand-burgundy-light  → #8F2748
+     bg-brand-gold            → #D4AF37
+     bg-brand-gold-light      → #E6C24A
+     text-text-inverted        → #FFFFFF
+     text-text-primary         → #1A1A1A (gray-900)
+     text-text-body            → #374151 (gray-700)
+     text-text-heading         → #111827 (gray-900)
+     bg-bg-subtle              → #F9FAFB (gray-50)
+     bg-surface-sage           → #E8F5E9
+     text-status-success       → #2E7D32
+     border-border-sage        → #A5D6A7
+     bg-status-success         → #4CAF50
+     bg-status-error           → #D32F2F
+     border-brand-burgundy     → #7A1F3D
+     border-brand-gold         → #D4AF37
+     border-border-gold        → #D4AF37  (for focus rings)
+     shadow-burgundy           → custom shadow in tailwind config
+     shadow-gold               → custom shadow in tailwind config
 ───────────────────────────────────────────────────────── */
 
 const buttonVariants = cva(
-  // Base styles applied to every variant
+  // ── Base styles applied to every variant ──────────────────
   [
+    // Layout
     "inline-flex items-center justify-center gap-2",
-    "font-body font-semibold",
-    "border border-transparent",
-    "rounded-lg",
+    // Typography
+    "font-body font-semibold tracking-wide",
+    // Shape
+    "rounded-lg border",
+    // Interaction
     "cursor-pointer select-none",
-    "transition-all duration-150",
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-gold focus-visible:ring-offset-2",
-    "disabled:opacity-45 disabled:pointer-events-none",
-    "active:scale-[0.97]",
+    // Smooth transitions for color, shadow, transform
+    "transition-all duration-200 ease-out",
+    // Focus ring — AA-accessible gold outline
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-gold focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+    // Disabled state — readable gray, no pointer, no hover
+    "disabled:bg-gray-100 disabled:text-gray-400 disabled:border-gray-200 disabled:shadow-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-100",
   ],
   {
     variants: {
       variant: {
-        /** Primary — burgundy fill, main CTA */
+        /* ── Primary — rich burgundy, main CTA ───────────────── */
         primary: [
-          "bg-brand-burgundy text-text-inverted border-brand-burgundy",
-          "hover:bg-brand-burgundy-light hover:shadow-burgundy hover:-translate-y-0.5",
+          "bg-brand-burgundy text-white border-brand-burgundy",
+          "shadow-sm",
+          // Hover: lift + deeper shadow + lighter burgundy
+          "hover:bg-[#8F2748] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(122,31,61,0.35)]",
+          // Active: press down
+          "active:translate-y-0 active:shadow-sm active:bg-[#6B1A34]",
         ],
-        /** Primary Gold — gold fill, premium/upgrade CTA */
+
+        /* ── Primary Gold — premium/upgrade CTA ──────────────── */
         "primary-gold": [
-          "bg-brand-gold text-text-primary border-brand-gold",
-          "hover:bg-brand-gold-light hover:shadow-gold hover:-translate-y-0.5",
+          // Gradient for premium feel: left-to-right gold sweep
+          "bg-gradient-to-r from-[#C9A227] via-[#D4AF37] to-[#E6C24A]",
+          "text-gray-900 border-[#C9A227]",
+          "shadow-sm font-bold",
+          // Hover: glow + lift
+          "hover:from-[#D4AF37] hover:via-[#E6C24A] hover:to-[#F0D060]",
+          "hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(212,175,55,0.45)]",
+          // Active: press
+          "active:translate-y-0 active:shadow-sm",
         ],
-        /** Secondary — outlined burgundy */
+
+        /* ── Secondary — outlined burgundy, fills on hover ───── */
         secondary: [
-          "bg-transparent text-brand-burgundy border-brand-burgundy",
-          "hover:bg-brand-burgundy hover:text-text-inverted hover:-translate-y-0.5",
+          "bg-white text-brand-burgundy border-brand-burgundy",
+          "shadow-sm",
+          // Hover: fill with burgundy, white text
+          "hover:bg-brand-burgundy hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(122,31,61,0.25)]",
+          // Active
+          "active:translate-y-0 active:shadow-sm active:bg-[#6B1A34]",
         ],
-        /** Ghost — no border, subtle hover */
+
+        /* ── Ghost — transparent, subtle hover bg ────────────── */
         ghost: [
-          "bg-transparent text-text-body border-transparent",
-          "hover:bg-bg-subtle hover:text-text-heading",
+          "bg-transparent text-gray-600 border-transparent",
+          // Hover: light gray wash, darker text
+          "hover:bg-gray-100 hover:text-gray-900",
+          // Active
+          "active:bg-gray-200 active:text-gray-900",
+          // Override disabled so ghost disabled stays legible
+          "disabled:bg-transparent disabled:text-gray-300 disabled:border-transparent",
         ],
-        /** Sage — green toned, used for completed/positive actions */
+
+        /* ── Sage — green, positive/completed actions ─────────── */
         sage: [
-          "bg-surface-sage text-status-success border-border-sage",
-          "hover:bg-status-success hover:text-text-inverted hover:-translate-y-0.5",
+          "bg-[#E8F5E9] text-[#2E7D32] border-[#A5D6A7]",
+          // Hover: fill with success green
+          "hover:bg-[#4CAF50] hover:text-white hover:border-[#4CAF50] hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(76,175,80,0.3)]",
+          // Active
+          "active:translate-y-0 active:bg-[#388E3C] active:border-[#388E3C]",
         ],
-        /** Danger — destructive actions */
+
+        /* ── Danger — destructive actions ─────────────────────── */
         danger: [
-          "bg-status-error text-text-inverted border-status-error",
-          "hover:opacity-90 hover:-translate-y-0.5",
+          "bg-[#D32F2F] text-white border-[#D32F2F]",
+          "shadow-sm",
+          // Hover: slightly brighter, lift
+          "hover:bg-[#B71C1C] hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(211,47,47,0.35)]",
+          // Active
+          "active:translate-y-0 active:shadow-sm active:bg-[#C62828]",
         ],
-        /** Link — looks like a text link */
+
+        /* ── Link — text link style, no background ────────────── */
         link: [
-          "bg-transparent text-brand-burgundy border-transparent underline-offset-4",
-          "hover:underline",
-          "h-auto p-0",
+          "bg-transparent text-brand-burgundy border-transparent",
+          "underline-offset-4 decoration-brand-burgundy/40",
+          // Hover: full underline + richer color
+          "hover:underline hover:text-[#8F2748] hover:decoration-[#8F2748]/70",
+          // Override size to collapse layout to inline
+          "!h-auto !px-0 !py-0 !rounded-none",
+          // Override disabled
+          "disabled:bg-transparent disabled:text-gray-400 disabled:border-transparent",
         ],
       },
+
       size: {
-        xs: "h-7 px-3 text-label rounded-md gap-1",
-        sm: "h-9 px-4 text-body-sm",
-        md: "h-11 px-5 text-body",
-        lg: "h-13 px-6 text-body-lg",
-        xl: "h-15 px-8 text-body-xl",
+        // Height / horizontal padding / font / icon gap
+        xs: "h-7  px-3   text-xs   rounded-md gap-1",
+        sm: "h-9  px-4   text-sm",
+        md: "h-11 px-5   text-sm",
+        lg: "h-12 px-6   text-base",
+        xl: "h-14 px-8   text-base",
+      },
+
+      /* ── Icon-only square sizing ──────────────────────────── */
+      iconOnly: {
+        true: "px-0",   // horizontal padding collapsed; width = height via w-* below
       },
     },
+
+    // Compound variants: when iconOnly is true, fix width = height per size
+    compoundVariants: [
+      { iconOnly: true, size: "xs", class: "w-7"  },
+      { iconOnly: true, size: "sm", class: "w-9"  },
+      { iconOnly: true, size: "md", class: "w-11" },
+      { iconOnly: true, size: "lg", class: "w-12" },
+      { iconOnly: true, size: "xl", class: "w-14" },
+    ],
+
     defaultVariants: {
       variant: "primary",
       size: "md",
@@ -80,12 +161,21 @@ const buttonVariants = cva(
 
 /* ─────────────────────────────────────────────────────────
    SPINNER
+   Inherits currentColor so it always matches the button text.
 ───────────────────────────────────────────────────────── */
 
-function Spinner({ className }: { className?: string }) {
+const spinnerSizeMap: Record<string, string> = {
+  xs: "w-3 h-3",
+  sm: "w-3.5 h-3.5",
+  md: "w-4 h-4",
+  lg: "w-4.5 h-4.5",
+  xl: "w-5 h-5",
+};
+
+function Spinner({ sizeClass }: { sizeClass: string }) {
   return (
     <svg
-      className={cn("animate-spin", className)}
+      className={cn("animate-spin shrink-0", sizeClass)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -109,19 +199,19 @@ function Spinner({ className }: { className?: string }) {
 }
 
 /* ─────────────────────────────────────────────────────────
-   BUTTON PROPS
+   BUTTON PROPS — unchanged public API
 ───────────────────────────────────────────────────────── */
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  /** Shows spinner and locks width — label hidden but kept for a11y */
+  /** Shows a spinner and locks interactivity; label is sr-only for a11y */
   isLoading?: boolean;
-  /** Icon before label */
+  /** Icon rendered before the label */
   leftIcon?: React.ReactNode;
-  /** Icon after label */
+  /** Icon rendered after the label */
   rightIcon?: React.ReactNode;
-  /** Icon-only mode — requires aria-label on the button */
+  /** Icon-only mode — button collapses to a square; pass aria-label! */
   iconOnly?: boolean;
 }
 
@@ -146,45 +236,55 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const shouldReduce = useReducedMotion();
-
-    const spinnerSize: Record<NonNullable<typeof size>, string> = {
-      xs: "w-3 h-3",
-      sm: "w-3.5 h-3.5",
-      md: "w-4 h-4",
-      lg: "w-5 h-5",
-      xl: "w-5 h-5",
-    };
-
     const resolvedSize = size ?? "md";
 
     return (
       <motion.button
         ref={ref}
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={cn(
+          buttonVariants({ variant, size, iconOnly: iconOnly || undefined }),
+          className,
+        )}
+        // aria-disabled surfaces loading state to screen readers without
+        // removing the element from the tab order (useful for tooltips).
+        aria-disabled={isLoading || disabled || undefined}
         disabled={disabled ?? isLoading}
+        // Framer Motion press animation respects prefers-reduced-motion.
+        whileHover={
+          shouldReduce
+            ? undefined
+            : { scale: variant === "link" || variant === "ghost" ? 1 : 1.015 }
+        }
         whileTap={shouldReduce ? undefined : { scale: 0.97 }}
+        transition={{ type: "spring", stiffness: 400, damping: 25 }}
         {...(props as React.ComponentProps<typeof motion.button>)}
       >
         {isLoading ? (
           <>
-            <Spinner className={spinnerSize[resolvedSize]} />
-            {/* Keep children in DOM for width stability, hide visually */}
+            {/* Spinner inherits text color → matches every variant */}
+            <Spinner sizeClass={spinnerSizeMap[resolvedSize]??"w-4 h-4"} />
+            {/* Hidden label keeps button width stable and aids SR */}
             <span className="sr-only">{children}</span>
           </>
         ) : (
           <>
             {leftIcon && (
-              <span className="shrink-0" aria-hidden="true">
+              <span className="shrink-0 inline-flex items-center" aria-hidden="true">
                 {leftIcon}
               </span>
             )}
+
+            {/* iconOnly: hide from AT since aria-label on button covers it */}
             {iconOnly ? (
-              <span aria-hidden="true">{children}</span>
+              <span className="inline-flex items-center justify-center" aria-hidden="true">
+                {children}
+              </span>
             ) : (
-              <span>{children}</span>
+              <span className="truncate">{children}</span>
             )}
+
             {rightIcon && (
-              <span className="shrink-0" aria-hidden="true">
+              <span className="shrink-0 inline-flex items-center" aria-hidden="true">
                 {rightIcon}
               </span>
             )}

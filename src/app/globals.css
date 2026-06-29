@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* ── Brand Core — Reference Image Exact Values ── */
+  /* ── Brand Core ── */
   --color-brand-burgundy:         #682332;
   --color-brand-burgundy-light:   #7D2B3E;
   --color-brand-burgundy-deep:    #4A1520;
@@ -13,7 +13,7 @@
   --color-brand-gold-pale:        #F5EDD3;
   --color-brand-gold-muted:       #C9A84C;
 
-  /* ── Backgrounds — Warm Ivory/Cream (80% of every page) ── */
+  /* ── Backgrounds ── */
   --color-bg-base:      #FAF7F2;
   --color-bg-canvas:    #F4EFE7;
   --color-bg-subtle:    #EDE8DE;
@@ -46,7 +46,7 @@
   --color-border-gold:    #D4AF37;
   --color-border-sage:    #7E9A83;
 
-  /* ── Support Colors — Sage, Olive, Brown ── */
+  /* ── Support Colors ── */
   --color-sage:           #7E9A83;
   --color-sage-light:     #A8C4AD;
   --color-sage-bg:        #EFF4F0;
@@ -104,15 +104,15 @@
   --radius-3xl:  48px;
   --radius-pill: 9999px;
 
-  /* ── Shadows — Warm Layered ── */
-  --shadow-xs:       0 1px 3px rgba(104,35,50,0.06);
-  --shadow-sm:       0 2px 8px rgba(104,35,50,0.08);
-  --shadow-md:       0 4px 20px rgba(104,35,50,0.10), 0 1px 4px rgba(104,35,50,0.06);
-  --shadow-lg:       0 8px 40px rgba(104,35,50,0.12), 0 2px 8px rgba(104,35,50,0.08);
-  --shadow-xl:       0 20px 60px rgba(104,35,50,0.16), 0 4px 12px rgba(104,35,50,0.08);
-  --shadow-gold:     0 4px 24px rgba(212,175,55,0.35);
-  --shadow-burgundy: 0 4px 24px rgba(104,35,50,0.30);
-  --shadow-card:     0 2px 16px rgba(45,36,24,0.08), 0 1px 4px rgba(45,36,24,0.04);
+  /* ── Shadows ── */
+  --shadow-xs:         0 1px 3px rgba(104,35,50,0.06);
+  --shadow-sm:         0 2px 8px rgba(104,35,50,0.08);
+  --shadow-md:         0 4px 20px rgba(104,35,50,0.10), 0 1px 4px rgba(104,35,50,0.06);
+  --shadow-lg:         0 8px 40px rgba(104,35,50,0.12), 0 2px 8px rgba(104,35,50,0.08);
+  --shadow-xl:         0 20px 60px rgba(104,35,50,0.16), 0 4px 12px rgba(104,35,50,0.08);
+  --shadow-gold:       0 4px 24px rgba(212,175,55,0.35);
+  --shadow-burgundy:   0 4px 24px rgba(104,35,50,0.30);
+  --shadow-card:       0 2px 16px rgba(45,36,24,0.08), 0 1px 4px rgba(45,36,24,0.04);
   --shadow-card-hover: 0 8px 40px rgba(45,36,24,0.14), 0 2px 8px rgba(45,36,24,0.08);
 
   /* ── Animation ── */
@@ -187,6 +187,23 @@
 
   html {
     -webkit-text-size-adjust: 100%;
+    /*
+      FIX: scroll-behavior removed from bare `html {}` selector.
+      It is now scoped to html[data-scroll-behavior="smooth"] below.
+
+      WHY: Next.js 16 detects scroll-behavior: smooth on <html> and
+      warns with "missing-data-scroll-behavior". The framework needs to
+      temporarily override scroll position during client-side route
+      transitions; a global smooth scroll setting fights that.
+
+      The attribute is set on <html> in layout.tsx, so all in-page
+      anchor links (#features, #pricing, etc.) still scroll smoothly.
+      Next.js strips the attribute during transitions, then restores it.
+    */
+  }
+
+  /* Scoped smooth scroll — only active when Next.js hasn't removed the attribute */
+  html[data-scroll-behavior="smooth"] {
     scroll-behavior: smooth;
   }
 
@@ -237,7 +254,10 @@
 
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: var(--color-bg-subtle); }
-  ::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: var(--radius-pill); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: var(--radius-pill);
+  }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -299,7 +319,12 @@
   .skip-link:focus { top: var(--spacing-4); }
 
   .skeleton-shimmer {
-    background: linear-gradient(90deg, var(--color-border-default) 25%, var(--color-bg-subtle) 50%, var(--color-border-default) 75%);
+    background: linear-gradient(
+      90deg,
+      var(--color-border-default) 25%,
+      var(--color-bg-subtle) 50%,
+      var(--color-border-default) 75%
+    );
     background-size: 200% 100%;
     animation: skeleton-shimmer 1600ms ease-in-out infinite;
   }
@@ -320,9 +345,9 @@
 
   .shake { animation: shake 200ms var(--ease-out-expo) forwards; }
 
-  .float { animation: float 6s ease-in-out infinite; }
-  .float-delayed { animation: float-delayed 8s ease-in-out infinite; }
-  .pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+  .float         { animation: float          6s ease-in-out infinite; }
+  .float-delayed { animation: float-delayed  8s ease-in-out infinite; }
+  .pulse-glow    { animation: pulse-glow     3s ease-in-out infinite; }
 
   .glass {
     background: var(--glass-bg);
@@ -345,7 +370,11 @@
   }
 
   .text-gradient-burgundy {
-    background: linear-gradient(135deg, var(--color-brand-burgundy) 0%, var(--color-brand-burgundy-light) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-brand-burgundy) 0%,
+      var(--color-brand-burgundy-light) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

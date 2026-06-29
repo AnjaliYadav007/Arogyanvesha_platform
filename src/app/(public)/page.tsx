@@ -447,7 +447,7 @@ function HeroSection({ shouldReduce }: { shouldReduce: boolean }) {
 
       <motion.div className="absolute inset-0 z-[3] pointer-events-none"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.5, delay: 0.9 }}>
-        <Image src="/images/illustrations/sparkles.png" alt="" fill
+        <Image src="/images/illustrations/sparkles.png" alt="" fill priority
           className="object-cover"
           style={{ opacity: 0.35, maskImage: "linear-gradient(to right, transparent 0%, transparent 38%, black 55%, black 100%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, transparent 38%, black 55%, black 100%)" }}
           aria-hidden="true" />
@@ -587,7 +587,7 @@ function HeroSection({ shouldReduce }: { shouldReduce: boolean }) {
                 className="absolute pointer-events-none"
                 style={{ inset: "-32px", zIndex: 0, scale: glowScale, opacity: 0.9 }}
               >
-                <Image src="/images/hero/glow.png" alt="" fill sizes="640px" className="object-contain" aria-hidden="true" />
+                <Image src="/images/hero/glow.png" alt="" fill sizes="640px" className="object-contain" priority loading="eager" aria-hidden="true" />
               </motion.div>
 
               <div className="relative w-full aspect-[3/4]" style={{ zIndex: 10 }}>
@@ -595,7 +595,7 @@ function HeroSection({ shouldReduce }: { shouldReduce: boolean }) {
 
                 <div className="absolute left-1/2 top-[5%] -translate-x-1/2" style={{ zIndex: 15 }}>
                   <div className="relative w-24 h-24 rounded-full overflow-hidden border-[4px] border-[#D4AF37] bg-[#6B1E2D] shadow-2xl flex items-center justify-center">
-                    <Image src="/images/logo/logo.jpeg" alt="Arogyanvesha Logo" fill className="object-cover" />
+                    <Image src="/images/logo/logo.jpeg" alt="Arogyanvesha Logo" fill sizes="96px" className="object-cover" priority />
                   </div>
                 </div>
 
