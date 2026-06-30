@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
-import { useUIStore, useAuthStore } from "@/stores";
+import { useUIStore, useAuthStore, usePrakritiStore, useChatStore, useRoutineStore } from "@/stores";
 import { useIsDesktop } from "@/hooks";
 import { Avatar } from "@/components/ui/Avatar";
 import { sidebarCollapse } from "@/lib/animations";
@@ -420,7 +420,15 @@ export function Sidebar() {
           {/* Logout Button */}
           <button
             type="button"
-            onClick={() => signOut({ callbackUrl: "/" })}
+            onClick={async () => {
+              // Clear all stores on logout
+              useAuthStore.getState().logout();
+              usePrakritiStore.getState().resetQuiz();
+              useChatStore.getState().clearChat();
+              useRoutineStore.setState({ todayLog: null, history: [], practices: [] });
+              
+              await signOut({ callbackUrl: "/login" });
+            }}
             className={cn(
               "w-full flex items-center gap-3 outline-none transition-all duration-200 mt-2",
               !isExpanded && "justify-center",

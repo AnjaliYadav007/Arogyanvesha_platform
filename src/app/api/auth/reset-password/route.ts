@@ -1,87 +1,85 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/firebase";
-import { confirmPasswordReset } from "firebase/auth";
-import { getLocalUsers, saveLocalUsers } from "@/lib/localDb";
-import { hashPassword } from "@/lib/crypto";
+import crypto from "crypto";
+import bcrypt from "bcryptjs";
+import { supabase } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   try {
     const { token, password } = await request.json();
 
-    if (!token || !password) {
+    if (!token || typeof token !== "string") {
       return NextResponse.json(
-        { code: "VALIDATION_ERROR", message: "Token and password are required." },
+        { code: "INVALID_TOKEN", message: "A password reset token is required." },
         { status: 400 }
       );
     }
 
-    if (password.length < 8) {
+    if (!password || typeof password !== "string" || password.length < 8) {
       return NextResponse.json(
-        { code: "VALIDATION_ERROR", message: "Password must be at least 8 characters long." },
+        { code: "INVALID_PASSWORD", message: "Password must be at least 8 characters long." },
         { status: 400 }
       );
     }
 
-    // Local DB Fallback Mode if Firebase is not configured
-    if (!auth) {
-      console.warn("Firebase not configured. Running reset-password in Local Database fallback mode.");
-      
-      const localUsers = getLocalUsers();
-      const userIndex = localUsers.findIndex((u) => u.otpCode === token);
-      if (userIndex === -1) {
-        return NextResponse.json(
-          { code: "INVALID_TOKEN", message: "This reset link is invalid or has expired." },
-          { status: 400 }
-        );
-      }
+    // 1. Hash the submitted token to find the matching DB entry
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
 
-      const localUser = localUsers[userIndex];
-      if (localUser) {
-        const expiresAt = new Date(localUser.otpExpiresAt || "");
-        if (expiresAt < new Date()) {
-          return NextResponse.json(
-            { code: "EXPIRED_TOKEN", message: "This reset link has expired. Please request a new one." },
-            { status: 400 }
-          );
-        }
+    // 2. Look up the token record in password_reset_tokens
+    const { data: resetRecord, error: recordError } = await supabase
+      .from("password_reset_tokens")
+      .select("user_id, expires_at, used_at")
+      .eq("token_hash", tokenHash)
+      .single();
 
-        // Token is valid! Update password hash and clear token fields
-        localUser.passwordHash = hashPassword(password);
-        localUser.otpCode = null;
-        localUser.otpExpiresAt = null;
-        saveLocalUsers(localUsers);
-        console.log(`[LOCAL DEV AUTH] Password reset successfully for user: ${localUser.email}`);
-      }
-
+    if (recordError || !resetRecord) {
       return NextResponse.json(
-        { message: "Password reset successful." },
-        { status: 200 }
-      );
-    }
-
-    // Firebase Auth Mode
-    try {
-      await confirmPasswordReset(auth, token, password);
-      console.log("[FIREBASE DEV AUTH] Password reset completed successfully via confirmPasswordReset");
-      return NextResponse.json(
-        { message: "Password reset successful." },
-        { status: 200 }
-      );
-    } catch (firebaseError: any) {
-      console.error("Firebase confirmPasswordReset error:", firebaseError);
-      let errorMessage = "This reset link is invalid or has expired. Please request a new one.";
-      if (firebaseError.code === "auth/expired-action-code") {
-        errorMessage = "This reset link has expired. Please request a new one.";
-      } else if (firebaseError.code === "auth/invalid-action-code") {
-        errorMessage = "This reset link is invalid. Please request a new one.";
-      }
-      return NextResponse.json(
-        { code: "RESET_FAILED", message: errorMessage },
+        { code: "EXPIRED_OR_INVALID", message: "The password reset token is invalid or has expired." },
         { status: 400 }
       );
     }
+
+    // 3. Verify token is not already used and not expired
+    const isExpired = new Date(resetRecord.expires_at).getTime() < Date.now();
+    if (resetRecord.used_at || isExpired) {
+      return NextResponse.json(
+        { code: "EXPIRED_OR_INVALID", message: "The password reset token is invalid or has expired." },
+        { status: 400 }
+      );
+    }
+
+    // 4. Hash the new password with bcryptjs
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    // 5. Update user password hash in Supabase users table
+    const { error: userUpdateError } = await supabase
+      .from("users")
+      .update({ password_hash: passwordHash })
+      .eq("id", resetRecord.user_id);
+
+    if (userUpdateError) {
+      console.error("User password update error:", userUpdateError);
+      return NextResponse.json(
+        { code: "SERVER_ERROR", message: "Failed to update password. Please try again." },
+        { status: 500 }
+      );
+    }
+
+    // 6. Delete all reset tokens for this user
+    const { error: deleteError } = await supabase
+      .from("password_reset_tokens")
+      .delete()
+      .eq("user_id", resetRecord.user_id);
+
+    if (deleteError) {
+      console.error("Reset tokens delete error:", deleteError);
+    }
+
+    return NextResponse.json(
+      { message: "Your password has been successfully reset. You may now log in." },
+      { status: 200 }
+    );
   } catch (error: any) {
-    console.error("Reset password handler error:", error);
+    console.error("Reset password API error:", error);
     return NextResponse.json(
       { code: "SERVER_ERROR", message: "An unexpected error occurred. Please try again." },
       { status: 500 }

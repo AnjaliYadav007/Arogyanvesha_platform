@@ -7,7 +7,7 @@ import { usePrakritiStore, useAuthStore } from "@/stores";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { prakritiAnalyzing, processingStep } from "@/lib/animations";
 import { api } from "@/lib/api";
-import type { Dosha, PrakritiResult } from "@/types";
+import type { PrakritiResult } from "@/types";
 
 const STEPS = [
   { text: "Analyzing physical body frames and physical traits...", delay: 0.5 },
@@ -31,60 +31,34 @@ export default function PrakritiAnalyzingPage() {
 
     const calculateAndSave = async () => {
       try {
-        const vataCount = answers.filter((a) => a.dosha === "vata").length;
-        const pittaCount = answers.filter((a) => a.dosha === "pitta").length;
-        const kaphaCount = answers.filter((a) => a.dosha === "kapha").length;
-        const total = answers.length || 1;
-
-        let vata = Math.round((vataCount / total) * 100);
-        let pitta = Math.round((pittaCount / total) * 100);
-        let kapha = Math.round((kaphaCount / total) * 100);
-
-        // Adjust rounding error so they sum to exactly 100%
-        const diff = 100 - (vata + pitta + kapha);
-        if (diff !== 0) {
-          if (vata >= pitta && vata >= kapha) vata += diff;
-          else if (pitta >= vata && pitta >= kapha) pitta += diff;
-          else kapha += diff;
-        }
-
-        const doshas: { name: Dosha; value: number }[] = [
-          { name: "vata", value: vata },
-          { name: "pitta", value: pitta },
-          { name: "kapha", value: kapha },
-        ];
-        // Sort highest to lowest
-        doshas.sort((a, b) => b.value - a.value);
-
-        const primaryDosha = doshas[0]?.name || "vata";
-        const secondaryDosha = doshas[1]?.name || "pitta";
-
-        const calculatedResult: PrakritiResult = {
-          id: "prakriti-" + Math.random().toString(36).substring(2, 11),
-          userId: user?.id || "anonymous",
-          primaryDosha,
-          secondaryDosha,
-          balance: { vata, pitta, kapha },
-          completedAt: new Date().toISOString(),
-          recommendations: [],
-        };
-
-        // Call the API endpoint to persist in Firestore or LocalDB
-        await api.post("/prakriti/save", {
-          email: user?.email,
-          primaryDosha,
-          secondaryDosha,
-          balance: { vata, pitta, kapha },
+        // Call the API endpoint to persist in Supabase
+        const response = await api.post("/prakriti/submit", {
+          answers,
         });
+        const serverResult = response.data;
 
         // Minimum delay to let the user see the complete animation (5.5 seconds)
         await new Promise((resolve) => setTimeout(resolve, 5500));
+
+        const calculatedResult: PrakritiResult = {
+          id: serverResult.id,
+          userId: user?.id || "anonymous",
+          primaryDosha: serverResult.primaryDosha,
+          secondaryDosha: serverResult.secondaryDosha,
+          balance: {
+            vata: serverResult.vataPct,
+            pitta: serverResult.pittaPct,
+            kapha: serverResult.kaphaPct,
+          },
+          completedAt: new Date().toISOString(),
+          recommendations: [],
+        };
 
         // Update local stores
         setResult(calculatedResult);
         updateUser({
           prakritiCompleted: true,
-          primaryDosha,
+          primaryDosha: serverResult.primaryDosha,
         });
 
         // Redirect to results screen
