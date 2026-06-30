@@ -27,7 +27,7 @@ const badgeVariants = cva(
         /** Brand — burgundy, used for primary labels */
         brand: "bg-brand-burgundy text-text-inverted border-brand-burgundy",
         /** Gold — premium plan labels */
-        gold: "bg-brand-gold text-text-primary border-brand-gold",
+        gold: "bg-brand-gold text-[#1A1208] border-brand-gold",
         /** Gold outline — on dark backgrounds */
         "gold-outline": "bg-transparent text-brand-gold border-brand-gold",
         /** Success */

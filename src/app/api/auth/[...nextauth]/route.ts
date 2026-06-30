@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { collection, query, where, getDocs, doc, setDoc } from "firebase/firestore";
@@ -7,7 +7,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { getLocalUsers } from "@/lib/localDb";
 import { verifyPassword } from "@/lib/crypto";
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -138,7 +138,7 @@ const handler = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account }: any) {
       if (account?.provider === "google") {
         try {
           const email = user.email?.toLowerCase().trim();
@@ -191,13 +191,13 @@ const handler = NextAuth({
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user && token.id) {
         (session.user as any).id = token.id;
 
@@ -228,7 +228,7 @@ const handler = NextAuth({
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET ?? "dev-secret-change-in-production",
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
