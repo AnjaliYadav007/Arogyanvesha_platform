@@ -167,7 +167,7 @@ export function Sidebar() {
             "relative z-10 flex items-center gap-3 px-4 shrink-0",
             !isExpanded && "justify-center",
           )}
-          style={{ height: "72px", borderBottom: "1px solid #EDE5D4" }}
+          style={{ height: "72px", borderBottom: "1px solid var(--sidebar-border)" }}
         >
           {/* Logo with gold ring */}
           <div className="relative flex-shrink-0" style={{ width: "42px", height: "42px" }}>
@@ -196,14 +196,14 @@ export function Sidebar() {
                 transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span
-                  className="whitespace-nowrap font-semibold tracking-wide leading-none"
-                  style={{ fontSize: "14.5px", color: "#5B3924", fontFamily: "var(--font-display, Georgia, serif)" }}
+                  className="whitespace-nowrap font-semibold tracking-wide leading-none text-text-primary"
+                  style={{ fontSize: "14.5px", fontFamily: "var(--font-display, Georgia, serif)" }}
                 >
                   AROGYANVESHA
                 </span>
                 <span
-                  className="whitespace-nowrap mt-0.5 leading-none"
-                  style={{ fontSize: "10px", color: "#B09A74", letterSpacing: "0.06em" }}
+                  className="whitespace-nowrap mt-0.5 leading-none text-text-muted"
+                  style={{ fontSize: "10px", letterSpacing: "0.06em" }}
                 >
                   Where AI Meets Ayurveda
                 </span>

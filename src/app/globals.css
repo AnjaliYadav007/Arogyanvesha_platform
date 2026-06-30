@@ -217,6 +217,20 @@
   --color-status-warning-bg:  rgba(196, 122, 26, 0.15);
   --color-status-error-bg:    rgba(176, 32, 32, 0.15);
   --color-status-info-bg:     rgba(42, 90, 138, 0.15);
+
+  /* ── Status Vibrant Text Dark Mode Overrides ── */
+  --color-status-success:     #4EAF76;
+  --color-status-warning:     #E2A546;
+  --color-status-error:       #E45B5B;
+  --color-status-info:        #5CA2E6;
+
+  /* ── Dosha Colors Dark Mode Overrides ── */
+  --color-dosha-vata:         #9F8BCA;
+  --color-dosha-pitta:        #EAA26B;
+  --color-dosha-kapha:        #5CB28A;
+  --color-dosha-vata-bg:      rgba(107, 79, 160, 0.15);
+  --color-dosha-pitta-bg:     rgba(196, 92, 26, 0.15);
+  --color-dosha-kapha-bg:     rgba(61, 122, 92, 0.15);
 }
 
 @layer base {
