@@ -126,8 +126,8 @@ export function Sidebar() {
           !isDesktop && !isSidebarExpanded && "-translate-x-full",
         )}
         style={{
-          background: "linear-gradient(180deg, #FFFDF8 0%, #FCF7EE 40%, #F8F2E5 100%)",
-          borderRight: "1px solid #E9DEC9",
+          background: "var(--sidebar-bg)",
+          borderRight: "1px solid var(--sidebar-border)",
           boxShadow: "4px 0 32px rgba(0,0,0,0.06)",
           borderTopRightRadius: "24px",
           borderBottomRightRadius: "24px",
@@ -239,7 +239,7 @@ export function Sidebar() {
                       letterSpacing: "0.25em",
                       textTransform: "uppercase",
                       fontWeight: 600,
-                      color: "#B09A74",
+                      color: "var(--sidebar-group-label)",
                     }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -272,22 +272,22 @@ export function Sidebar() {
                       paddingLeft: isExpanded ? "14px" : "12px",
                       paddingRight: isExpanded ? "12px" : "12px",
                       borderRadius: "14px",
-                      color: isActive ? "#7A3E2C" : "#6B6155",
+                      color: isActive ? "var(--sidebar-text-active)" : "var(--sidebar-text-inactive)",
                       background: isActive
-                        ? "linear-gradient(90deg, rgba(151,72,53,0.11) 0%, rgba(190,145,74,0.07) 100%)"
+                        ? "var(--sidebar-active-bg)"
                         : "transparent",
                       boxShadow: isActive ? "0 1px 4px rgba(151,72,53,0.08)" : "none",
                     }}
                     onMouseEnter={(e) => {
                       if (!isActive) {
-                        (e.currentTarget as HTMLAnchorElement).style.background = "rgba(233,222,201,0.5)";
-                        (e.currentTarget as HTMLAnchorElement).style.color = "#5B3924";
+                        (e.currentTarget as HTMLAnchorElement).style.background = "var(--sidebar-hover-bg)";
+                        (e.currentTarget as HTMLAnchorElement).style.color = "var(--sidebar-hover-text)";
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isActive) {
                         (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
-                        (e.currentTarget as HTMLAnchorElement).style.color = "#6B6155";
+                        (e.currentTarget as HTMLAnchorElement).style.color = "var(--sidebar-text-inactive)";
                       }
                     }}
                   >
@@ -347,7 +347,7 @@ export function Sidebar() {
         {/* ── USER FOOTER ── */}
         <div
           className="relative z-10 shrink-0 px-3 pb-4"
-          style={{ borderTop: "1px solid #EDE5D4", paddingTop: "12px" }}
+          style={{ borderTop: "1px solid var(--sidebar-border)", paddingTop: "12px" }}
         >
           <Link
             href="/profile"
@@ -358,16 +358,16 @@ export function Sidebar() {
             style={{
               padding: isExpanded ? "10px 12px" : "10px",
               borderRadius: "16px",
-              background: "rgba(233,222,201,0.35)",
-              border: "1px solid rgba(233,222,201,0.6)",
+              background: "var(--sidebar-user-bg)",
+              border: "1px solid var(--sidebar-user-border)",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(233,222,201,0.6)";
+              (e.currentTarget as HTMLAnchorElement).style.background = "var(--sidebar-user-hover-bg)";
               (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-1px)";
               (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.06)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(233,222,201,0.35)";
+              (e.currentTarget as HTMLAnchorElement).style.background = "var(--sidebar-user-bg)";
               (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
               (e.currentTarget as HTMLAnchorElement).style.boxShadow = "none";
             }}
@@ -388,14 +388,14 @@ export function Sidebar() {
                   transition={{ duration: 0.16 }}
                 >
                   <span
-                    className="truncate font-semibold leading-none"
-                    style={{ fontSize: "13.5px", color: "#4B3828" }}
+                    className="truncate font-semibold leading-none text-text-primary"
+                    style={{ fontSize: "13.5px" }}
                   >
                     {user?.name ?? "User"}
                   </span>
                   <span
-                    className="truncate mt-0.5 leading-none"
-                    style={{ fontSize: "11px", color: "#9A8878" }}
+                    className="truncate mt-0.5 leading-none text-text-muted"
+                    style={{ fontSize: "11px" }}
                   >
                     {user?.email ?? ""}
                   </span>
@@ -428,18 +428,18 @@ export function Sidebar() {
             style={{
               padding: isExpanded ? "10px 12px" : "10px",
               borderRadius: "16px",
-              background: "rgba(122,62,44,0.05)",
-              border: "1px solid rgba(122,62,44,0.15)",
-              color: "#7A3E2C",
+              background: "var(--sidebar-logout-bg)",
+              border: "1px solid var(--sidebar-logout-border)",
+              color: "var(--sidebar-logout-color)",
               fontWeight: 500,
               cursor: "pointer",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "rgba(122,62,44,0.1)";
+              (e.currentTarget as HTMLButtonElement).style.background = "var(--sidebar-logout-hover-bg)";
               (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "rgba(122,62,44,0.05)";
+              (e.currentTarget as HTMLButtonElement).style.background = "var(--sidebar-logout-bg)";
               (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)";
             }}
           >

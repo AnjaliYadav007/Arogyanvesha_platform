@@ -70,8 +70,8 @@ export default function PrakritiAnalyzingPage() {
         };
 
         // Call the API endpoint to persist in Firestore or LocalDB
-        await api.post("/auth/register", {}); // Warmup check/fallback support if needed
         await api.post("/prakriti/save", {
+          email: user?.email,
           primaryDosha,
           secondaryDosha,
           balance: { vata, pitta, kapha },

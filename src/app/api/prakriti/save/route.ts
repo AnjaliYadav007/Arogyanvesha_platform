@@ -6,17 +6,23 @@ import { getLocalUsers, saveLocalUsers } from "@/lib/localDb";
 
 export async function POST(request: NextRequest) {
   try {
-    const { primaryDosha, secondaryDosha, balance } = await request.json();
+    const { email: bodyEmail, primaryDosha, secondaryDosha, balance } = await request.json();
 
-    const session = await getServerSession();
-    if (!session || !session.user || !session.user.email) {
+    let email = bodyEmail?.toLowerCase().trim();
+
+    if (!email) {
+      const session = await getServerSession();
+      if (session?.user?.email) {
+        email = session.user.email.toLowerCase().trim();
+      }
+    }
+
+    if (!email) {
       return NextResponse.json(
         { code: "UNAUTHORIZED", message: "You must be signed in to save results." },
         { status: 401 }
       );
     }
-
-    const email = session.user.email.toLowerCase().trim();
 
     // Local DB Fallback Mode if Firebase is not configured
     if (!db) {
