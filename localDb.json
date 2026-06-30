@@ -40,5 +40,19 @@
     "otpCode": null,
     "otpExpiresAt": null,
     "avatarUrl": null
+  },
+  {
+    "id": "local-user-3yckvu8d0",
+    "name": "Anjali Yadav",
+    "email": "anjaliy0320@gmail.com",
+    "passwordHash": "ab171cfdaadc22573a45df30bc08188a:b3c85316c7324c89bd2e30ca74b84d0bffefef53fa88a6052216bd8d336e7b8f650150dc290b8acec0d7ada4c6bd0e6aea070b845c979cc3214dc7c6eb735cb6",
+    "plan": "free",
+    "prakritiCompleted": false,
+    "currentStreak": 0,
+    "createdAt": "2026-06-29T19:16:22.712Z",
+    "isVerified": true,
+    "otpCode": null,
+    "otpExpiresAt": null,
+    "avatarUrl": null
   }
 ]
