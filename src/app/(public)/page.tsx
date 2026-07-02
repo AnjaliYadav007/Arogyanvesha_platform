@@ -430,7 +430,7 @@ function HeroSection({ shouldReduce }: { shouldReduce: boolean }) {
       </div>
 
       <div className="absolute right-[5%] top-1/2 -translate-y-1/2 z-[1] pointer-events-none w-[480px] h-[480px] opacity-[0.018]">
-        <Image src="/images/illustrations/lotus-watermark.png" alt="" fill sizes="480px" className="object-contain" aria-hidden="true" />
+        <Image src="/images/illustrations/lotus-watermark.png" alt="" fill sizes="480px" className="object-contain" aria-hidden="true" priority/>
       </div>
 
       <motion.div className="absolute top-14 left-0 w-28 h-52 z-[2] pointer-events-none"

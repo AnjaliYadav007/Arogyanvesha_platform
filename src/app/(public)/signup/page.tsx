@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/Input";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { useToast } from "@/components/ui/Toast";
 import { api } from "@/lib/api";
-
+import Image from "next/image";
 /* ─────────────────────────────────────────────────────────
    SCHEMA
 ───────────────────────────────────────────────────────── */
@@ -163,9 +163,16 @@ export default function SignupPage() {
       >
         {/* Header */}
         <div className="mb-8 text-center">
-          <div className="w-14 h-14 rounded-2xl bg-brand-burgundy flex items-center justify-center mx-auto mb-4">
-            <span className="text-text-inverted text-h3 font-bold font-display">A</span>
-          </div>
+          <div className="flex justify-center mb-4">
+ <Image
+  src="/images/logo/logo.jpeg"
+  alt="Arogyanvesha Logo"
+  width={56}
+  height={56}
+  className="h-16 w-16 rounded-full object-cover"
+  priority
+/>
+</div>
           <h1 className="text-h1 font-bold text-text-heading mb-2">
             Begin your journey
           </h1>

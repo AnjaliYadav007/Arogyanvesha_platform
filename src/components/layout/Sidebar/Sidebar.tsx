@@ -144,21 +144,21 @@ export function Sidebar() {
 
         {/* Lotus watermark — center */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0" aria-hidden="true">
-          <div className="relative w-48 h-48 opacity-[0.04]">
-            <Image src="/images/illustrations/lotus-watermark.png" alt="" fill className="object-contain" />
+          <div className="relative w-48 h-48 opacity-[0.15]">
+            <Image src="/images/illustrations/lotus-watermark.png" alt="" fill  sizes="200px" className="object-contain" priority />
           </div>
         </div>
 
         {/* Leaf — bottom left */}
         <div className="absolute bottom-0 left-0 pointer-events-none z-0" aria-hidden="true"
           style={{ width: "120px", height: "160px", opacity: 0.28 }}>
-          <Image src="/images/illustrations/leaf-left.png" alt="" fill className="object-contain object-bottom-left" />
+          <Image src="/images/illustrations/leaf-left.png" alt="" fill sizes="160px" className="object-contain object-bottom-left" />
         </div>
 
         {/* Leaf — top right */}
         <div className="absolute top-0 right-0 pointer-events-none z-0" aria-hidden="true"
           style={{ width: "80px", height: "100px", opacity: 0.14 }}>
-          <Image src="/images/illustrations/leaf-right.png" alt="" fill className="object-contain object-top-right" />
+          <Image src="/images/illustrations/leaf-right.png" alt="" fill sizes="160px" className="object-contain object-top-right" />
         </div>
 
         {/* ── HEADER ── */}
@@ -181,7 +181,7 @@ export function Sidebar() {
                 alt="Arogyanvesha Logo"
                 fill
                 sizes="42px"
-                className="object-cover"
+                className="w-14 h-14 rounded-full object-cover"
               />
             </div>
           </div>

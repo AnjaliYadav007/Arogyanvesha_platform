@@ -11,7 +11,7 @@ import { signIn } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { pageEnter } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks";
-
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useToast } from "@/components/ui/Toast";
@@ -139,10 +139,19 @@ export default function LoginPage() {
         </div>
 
         <div className="relative z-10 text-center">
+        
           {/* Logo */}
-          <div className="w-20 h-20 rounded-2xl bg-brand-gold/20 border border-brand-gold/30 flex items-center justify-center mx-auto mb-8">
-            <span className="text-brand-gold text-h2 font-bold font-display">A</span>
-          </div>
+<div className="flex justify-center mb-8">
+  <Image
+  src="/images/logo/logo.jpeg"
+  alt="Arogyanvesha Logo"
+  width={120}
+  height={120}
+  style={{ width: "120px", height: "120px" }}
+  className="rounded-2xl object-contain"
+  priority
+/>
+</div>
 
           <h1 className="text-display font-bold text-text-inverted font-display mb-4">
             Arogyanvesha
